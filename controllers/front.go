@@ -2,6 +2,7 @@ package controllers
 
 import "net/http"
 
+// RegisterControllers exported
 func RegisterControllers() {
 	uc := newUserController()
 
