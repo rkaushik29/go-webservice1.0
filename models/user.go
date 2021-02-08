@@ -1,9 +1,9 @@
 package models
 
 import (
-	"errors"	"fmt"
+	"errors"
+	"fmt"
 )
-
 
 type User struct {
 	ID        int
@@ -40,8 +40,8 @@ func getUserByID(id int) (User, error) {
 	return User{}, fmt.Errorf("User with ID '%v' not found", id)
 }
 
-func updateUser (u User) (User, error) {
-	for i, candidiate := range users {
+func updateUser(u User) (User, error) {
+	for i, candidate := range users {
 		if candidate.ID == u.ID {
 			users[i] = &u
 			return u, nil
@@ -50,10 +50,10 @@ func updateUser (u User) (User, error) {
 	return User{}, fmt.Errorf("User with ID '%v' not found", u.ID)
 }
 
-func removeUserByID (id int) error {
+func removeUserByID(id int) error {
 	for i, u := range users {
 		if u.ID == id {
-			users = append(users[:i], users[i+1:])
+			users = append(users[:i], users[i+1:]...)
 			return nil
 		}
 	}
