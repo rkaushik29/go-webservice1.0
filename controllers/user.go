@@ -17,7 +17,36 @@ type userController struct {
 }
 
 func (uc userController) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("User Controller connected..."))
+	if r.URL.Path = "/users" {
+		switch r.Method {
+		case http.MethodGet:
+			uc.getAll(w, r)
+		case http.MethodPost:
+			uc.post(w, r)
+		default:
+			w.WriteHeader(http.StatusNotImplemented)
+		}
+	} else {
+		matches := uc.userIDPattern.FindAllStringSubmatch(r.URL.Path)
+		if len(matches) == 0 {
+			w.WriteHeader(http.StatusNotFound)
+		}
+		id, err := strconv.Atoi(matches[1])
+		if err != nil {
+			w.WriteHeader(http.StatusNotFound)
+		}
+		switch r.Method {
+		case http.MethodGet:
+			uc.get(id, w)
+		case http.MethodPut:
+			uc.put(id, w, r)
+		case http.MethodDelete:
+			uc.delete(id, w)
+		default:
+			w.WriteHeader(http.StatusNotImplemented)
+		}
+
+	}
 }
 
 func (uc *userController) getAll(w http.ResponseWriter, r *http.Request) {
