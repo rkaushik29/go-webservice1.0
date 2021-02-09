@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"regexp"
+	"strconv"
 
 	"github.com/pluralsight/webservice/models"
 )
@@ -17,7 +18,7 @@ type userController struct {
 }
 
 func (uc userController) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path = "/users" {
+	if r.URL.Path == "/users" {
 		switch r.Method {
 		case http.MethodGet:
 			uc.getAll(w, r)
@@ -27,7 +28,7 @@ func (uc userController) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusNotImplemented)
 		}
 	} else {
-		matches := uc.userIDPattern.FindAllStringSubmatch(r.URL.Path)
+		matches := uc.userIDPattern.FindStringSubmatch(r.URL.Path)
 		if len(matches) == 0 {
 			w.WriteHeader(http.StatusNotFound)
 		}
